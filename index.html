@@ -494,6 +494,8 @@ body {
 .put-me-btn:not(:disabled):hover { background:var(--white); box-shadow:0 0 28px var(--blue-glow); }
 .submit-error-text { display:none; font-family:"Special Elite",serif; font-size:0.85rem; color:var(--red-neon); text-shadow:0 0 6px rgba(255,26,26,0.4); margin-top:0.4rem; }
 .submit-error-text.show { display:block; }
+.field-error-text { display:none; font-family:"Special Elite",serif; font-size:0.78rem; color:var(--red-neon); }
+.field-error-text.show { display:block; }
 .trainee-note { font-family:"Special Elite",serif; font-size:0.75rem; color:var(--grey-dim); line-height:1.6; max-width:500px; text-align:center; border-top:1px solid #222; padding-top:0.8rem; }
 
 /* ════════════════════════════════
@@ -923,6 +925,7 @@ body {
     <div class="form-group">
       <label class="form-label">Email (confirmation only)</label>
       <input class="form-input" type="email" name="email" placeholder="yours@wherever.com" required>
+      <span class="field-error-text" id="field-error-email"></span>
     </div>
     <div class="form-group">
       <label class="form-label">Choose your slot</label>
@@ -949,10 +952,12 @@ body {
         <option value="Sat 22:00 CET">Saturday 22:00 CET</option>
         <option value="Sat 22:30 CET">Saturday 22:30 CET</option>
       </select>
+      <span class="field-error-text" id="field-error-slot"></span>
     </div>
     <div class="form-group">
       <label class="form-label">Your timezone</label>
       <input class="form-input" type="text" name="timezone" placeholder="e.g. CET, GMT, EST" required>
+      <span class="field-error-text" id="field-error-timezone"></span>
     </div>
     <input type="hidden" name="note" id="form-note">
     <input type="hidden" name="_subject" id="form-subject" value="New Last Call booking">
@@ -963,6 +968,7 @@ body {
         I understand and I&#39;m ready to show up.
       </label>
     </div>
+    <p class="submit-error-text" id="submit-error"></p>
     <button type="submit" class="put-me-btn" id="submit-btn" disabled>PUT ME ON THE LIST</button>
   </form>
   <p class="trainee-note">
@@ -1133,7 +1139,7 @@ function handleSubmit(e){
 
   submitBtn.disabled = true;
   submitBtn.textContent = "SENDING...";
-  hideSubmitError();
+  clearAllErrors();
 
   fetch(form.action, {
     method: "POST",
@@ -1144,7 +1150,7 @@ function handleSubmit(e){
     if (res.ok) {
       goTo("screen-confirm");
     } else {
-      res.json().then(showFormspreeError).catch(() => showSubmitError());
+      res.json().then(showFormspreeErrors).catch(() => showSubmitError());
     }
   })
   .catch(() => showSubmitError())
@@ -1154,33 +1160,46 @@ function handleSubmit(e){
   });
 }
 
-function getOrCreateSubmitError(){
-  let err = document.getElementById("submit-error");
-  if(!err){
-    err = document.createElement("p");
-    err.id = "submit-error";
-    err.className = "submit-error-text";
-    document.getElementById("booking-form").appendChild(err);
-  }
-  return err;
-}
+// Fields with a visible slot for a field-specific error message
+const FIELD_ERROR_IDS = { email: "field-error-email", slot: "field-error-slot", timezone: "field-error-timezone" };
 
 function showSubmitError(message){
-  const err = getOrCreateSubmitError();
+  const err = document.getElementById("submit-error");
   err.textContent = message || "Something went wrong sending your booking. Please check your connection and try again.";
   err.classList.add("show");
 }
 
-function showFormspreeError(data){
-  const detail = (data && data.errors && data.errors.length)
-    ? data.errors.map(x => x.message).join(", ")
-    : null;
-  showSubmitError(detail ? ("Couldn't send your booking: " + detail) : null);
+function showFormspreeErrors(data){
+  const errors = (data && Array.isArray(data.errors)) ? data.errors : [];
+  if (!errors.length) { showSubmitError(); return; }
+
+  let shownInline = false;
+  errors.forEach(e => {
+    const targetId = e.field && FIELD_ERROR_IDS[e.field];
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      el.textContent = e.message || "This field looks invalid.";
+      el.classList.add("show");
+      shownInline = true;
+    }
+  });
+
+  // Errors without a matching field (e.g. spam filtering, general form errors)
+  const generalMessages = errors.filter(e => !e.field || !FIELD_ERROR_IDS[e.field]).map(e => e.message).filter(Boolean);
+  if (generalMessages.length) {
+    showSubmitError(generalMessages.join(", "));
+  } else if (!shownInline) {
+    showSubmitError();
+  }
 }
 
-function hideSubmitError(){
+function clearAllErrors(){
   const err = document.getElementById("submit-error");
-  if(err) err.classList.remove("show");
+  if (err) err.classList.remove("show");
+  Object.values(FIELD_ERROR_IDS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("show");
+  });
 }
 
 function showConfirm(){
