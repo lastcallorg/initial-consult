@@ -913,7 +913,7 @@ body {
 <section class="screen" id="screen-booking">
   <button class="nav-back" onclick="goTo('screen-handle')">← back</button>
   <h2 class="booking-title">PUT ME ON THE LIST</h2>
-  <form class="booking-form" id="booking-form" action="https://formspree.io/f/xkoldprl" method="POST" onsubmit="handleSubmit(event)">
+  <form class="booking-form" id="booking-form" action="https://formspree.io/f/mykqyagr" method="POST" onsubmit="handleSubmit(event)">
     <div class="form-group">
       <label class="form-label">Your handle</label>
       <input class="form-input" type="text" name="handle" id="form-handle" readonly style="color:var(--gold);">
@@ -964,6 +964,9 @@ body {
     <input type="hidden" name="disc_scores" id="form-disc-scores">
     <input type="hidden" name="dominant_trait" id="form-dominant">
     <input type="hidden" name="green_room_token" id="form-token">
+    <input type="hidden" name="screening_thoughts_of_harm" id="form-screen-q1">
+    <input type="hidden" name="screening_safe_place" id="form-screen-q2">
+    <input type="hidden" name="screening_active_clinical_care" id="form-screen-q3">
     <input type="hidden" name="_subject" id="form-subject" value="New Last Call booking">
     <div class="consent-block">
       <p class="consent-text">By booking, you confirm you have read and understood the information on the previous screen. You consent to your contact details being used solely for session confirmation and deleted after your session date. You understand this is a trainee peer-support service, not a clinical or therapeutic practice. In the event of a serious risk to life, Les may act under Article 450 NL.</p>
@@ -1118,6 +1121,12 @@ function prefillForm(){
     Object.entries(state.discScores).map(([k,v])=>k+":"+v).join(" ");
   document.getElementById("form-dominant").value=state.dominant||"";
   document.getElementById("form-token").value=state.token||"—";
+  document.getElementById("form-screen-q1").value=
+    screenState.q1==="yes" ? "Yes – thoughts of self-harm/harm to others" : screenState.q1==="no" ? "No" : "—";
+  document.getElementById("form-screen-q2").value=
+    screenState.q2==="yes" ? "Yes – safe place" : screenState.q2==="no" ? "Not quite" : "—";
+  document.getElementById("form-screen-q3").value=
+    screenState.q3==="yes" ? "Yes – active clinical care" : screenState.q3==="no" ? "No" : "—";
 }
 
 const screenState={q1:null,q2:null,q3:null};
