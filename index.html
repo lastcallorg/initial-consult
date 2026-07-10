@@ -437,9 +437,10 @@ body {
    SCREEN 6 — BEFORE YOU BOOK
 ════════════════════════════════ */
 #screen-brief { gap:1.2rem; max-width:640px; margin:0 auto; text-align:left; }
-.brief-title { font-family:"Special Elite",serif; font-size:1.8rem; color:var(--red-neon); letter-spacing:0.1em; text-transform:uppercase; font-style:italic; text-decoration:underline; text-shadow:0 0 12px var(--red-neon),0 0 28px #cc0000; text-align:center; }
-.brief-body { font-family:"VT323",monospace; font-size:1.45rem; color:var(--white); line-height:1.75; font-style:italic; }
-.brief-body .brief-last-line { font-weight:bold; text-decoration:underline; font-style:normal; }
+.brief-title { font-family:"Special Elite",serif; font-size:1.6rem; color:var(--red-neon); letter-spacing:0.08em; text-transform:uppercase; text-shadow:0 0 4px rgba(255,60,60,0.5); text-align:center; }
+.brief-body { font-family:"VT323",monospace; font-size:1.15rem; color:var(--white); line-height:1.4; font-style:normal; }
+.brief-body p { margin:0 0 0.7rem 0; }
+.brief-body .brief-last-line { font-weight:normal; text-decoration:underline; margin-top:0.3rem; }
 .brief-ready-btn { font-family:"Special Elite",serif; font-size:1rem; color:var(--red-neon); border:2px solid var(--red-neon); background:transparent; padding:0.8rem 2rem; cursor:pointer; letter-spacing:0.1em; transition:all 0.2s ease; text-shadow:0 0 8px var(--red-neon); text-transform:uppercase; align-self:center; border-radius:4px; }
 .brief-ready-btn:hover { background:var(--red-neon); color:var(--black); text-shadow:none; box-shadow:0 0 20px var(--red-neon); }
 
@@ -651,7 +652,7 @@ body {
 <section class="screen" id="screen-lobby">
   <button class="nav-back" onclick="goTo('screen-landing')">← back</button>
   <h2 class="lobby-title">THE LOBBY</h2>
-  <p class="lobby-before-text">
+  <p class="lobby-before-text" id="lobby-header-text">
     Before we begin — this is a safe space.<br>
     No recordings. No real names. No clipboard.<br>
     Just a frequency. Just you, for 30 minutes.<br><br>
@@ -841,10 +842,10 @@ body {
   <button class="nav-back" onclick="goTo('screen-note')">← back</button>
   <h2 class="brief-title">BEFORE YOU BOOK</h2>
   <div class="brief-body">
-    <p>Les / Colin is a student at the Academie voor Coaching en Counselling (ACC), Amsterdam, completing Year 1. Last Call is a supervised trainee practice. It is not a clinical or therapeutic service.</p><br>
-    <p>This is a space for honest conversation — not diagnosis, not therapy, not crisis support. If you are experiencing a mental health emergency, please contact 113 (suicide prevention), 112 (emergency services), or Veilig Thuis on 0800-2000.</p><br>
-    <p>In the rare event of a serious risk to life, Les may need to act — Article 450 NL applies. This is the only exception to anonymity.</p><br>
-    <p>Sessions are not recorded. No real names are stored. Your email is used for confirmation only and deleted after your session date.</p><br>
+    <p>Les / Colin is a student at the Academie voor Coaching en Counselling (ACC), Amsterdam, completing Year 1. Last Call is a supervised trainee practice. It is not a clinical or therapeutic service.</p>
+    <p>This is a space for honest conversation — not diagnosis, not therapy, not crisis support. If you are experiencing a mental health emergency, please contact 113 (suicide prevention), 112 (emergency services), or Veilig Thuis on 0800-2000.</p>
+    <p>In the rare event of a serious risk to life, Les may need to act — Article 450 NL applies. This is the only exception to anonymity.</p>
+    <p>Sessions are not recorded. No real names are stored. Your email is used for confirmation only and deleted after your session date.</p>
     <p class="brief-last-line">Your call. Your 30 minutes. His full attention.</p>
   </div>
   <button class="brief-ready-btn" onclick="goTo('screen-screening')">I AM READY</button>
@@ -913,7 +914,7 @@ body {
 <section class="screen" id="screen-booking">
   <button class="nav-back" onclick="goTo('screen-handle')">← back</button>
   <h2 class="booking-title">PUT ME ON THE LIST</h2>
-  <form class="booking-form" id="booking-form" action="https://formspree.io/f/xkoldprl" method="POST" onsubmit="handleSubmit(event)">
+  <form class="booking-form" id="booking-form" onsubmit="handleSubmit(event)">
     <div class="form-group">
       <label class="form-label">Your handle</label>
       <input class="form-input" type="text" name="handle" id="form-handle" readonly style="color:var(--gold);">
@@ -929,7 +930,7 @@ body {
     </div>
     <div class="form-group">
       <label class="form-label">Choose your slot</label>
-      <select class="form-select" name="slot" required>
+      <select class="form-select" name="slot" id="slot-select" required>
         <option value="">— pick a time —</option>
         <option value="Tue 21:00 CET">Tuesday 21:00 CET</option>
         <option value="Tue 21:30 CET">Tuesday 21:30 CET</option>
@@ -967,7 +968,7 @@ body {
     <input type="hidden" name="screening_thoughts_of_harm" id="form-screen-q1">
     <input type="hidden" name="screening_safe_place" id="form-screen-q2">
     <input type="hidden" name="screening_active_clinical_care" id="form-screen-q3">
-    <input type="hidden" name="_subject" id="form-subject" value="New Last Call booking">
+    <input type="hidden" name="subject" id="form-subject" value="New Last Call booking">
     <div class="consent-block">
       <p class="consent-text">By booking, you confirm you have read and understood the information on the previous screen. You consent to your contact details being used solely for session confirmation and deleted after your session date. You understand this is a trainee peer-support service, not a clinical or therapeutic practice. In the event of a serious risk to life, Les may act under Article 450 NL.</p>
       <label class="consent-label">
@@ -1022,6 +1023,14 @@ body {
   </div>
 </section>
 
+<!-- EmailJS: replace YOUR_EMAILJS_PUBLIC_KEY below with the Public Key from
+     your EmailJS dashboard → Account page -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function () {
+    emailjs.init({ publicKey: "_uqB5T2bAlYGRIeuf" });
+  })();
+</script>
 <script>
 const state = {
   discScores:{D:0,I:0,S:0,C:0},
@@ -1066,6 +1075,8 @@ function showRiddle(idx){
 }
 
 function selectAnswer(riddleIdx,discType,btn){
+  const header=document.getElementById("lobby-header-text");
+  if(header) header.style.display="none";
   btn.closest(".riddle-options").querySelectorAll(".riddle-option").forEach(b=>b.classList.remove("selected"));
   btn.classList.add("selected");
   if(state.answers[riddleIdx]) state.discScores[state.answers[riddleIdx]]--;
@@ -1112,7 +1123,47 @@ function setupHandle(){
   document.getElementById("handle-passphrase-display").textContent=state.passphrase||"—";
 }
 
+const SLOT_DAY_INDEX={Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+const WEEKDAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+function getAmsterdamOffsetMinutes(){
+  try{
+    const now=new Date();
+    const fmt=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Amsterdam',timeZoneName:'shortOffset'});
+    const parts=fmt.formatToParts(now);
+    const tzPart=(parts.find(p=>p.type==='timeZoneName')||{}).value||'GMT+1';
+    const m=tzPart.match(/GMT([+-]?\d+)(?::(\d+))?/);
+    if(!m) return 60;
+    const h=parseInt(m[1],10);
+    const mins=m[2]?parseInt(m[2],10):0;
+    return h>=0 ? h*60+mins : h*60-mins;
+  }catch(e){ return 60; }
+}
+
+function localizeSlotOptions(){
+  const select=document.getElementById("slot-select");
+  if(!select) return;
+  const amsOffset=getAmsterdamOffsetMinutes();
+  const localOffset=-new Date().getTimezoneOffset();
+  const diff=amsOffset-localOffset;
+  const pad=n=>String(n).padStart(2,"0");
+  Array.from(select.options).forEach(opt=>{
+    const val=opt.value;
+    if(!val) return; // leave the "— pick a time —" placeholder alone
+    const [dayAbbr,timeStr]=val.replace(" CET","").split(" ");
+    const dayIdx=SLOT_DAY_INDEX[dayAbbr];
+    if(dayIdx===undefined) return;
+    const [hh,mm]=timeStr.split(":").map(Number);
+    const totalMin=dayIdx*1440+hh*60+mm-diff;
+    const localDayIdx=(((Math.floor(totalMin/1440))%7)+7)%7;
+    const minOfDay=((totalMin%1440)+1440)%1440;
+    const lh=Math.floor(minOfDay/60), lm=minOfDay%60;
+    opt.textContent=WEEKDAY_NAMES[localDayIdx]+" "+pad(lh)+":"+pad(lm);
+  });
+}
+
 function prefillForm(){
+  localizeSlotOptions();
   document.getElementById("form-handle").value=state.handle||"—";
   document.getElementById("form-passphrase").value=state.passphrase||"—";
   document.getElementById("form-note").value=document.getElementById("caller-note").value||"";
@@ -1145,6 +1196,10 @@ function toggleSubmit(){
   document.getElementById("submit-btn").disabled=!document.getElementById("consent-check").checked;
 }
 
+// Replace these with the Service ID and Template ID from your EmailJS dashboard
+const EMAILJS_SERVICE_ID = "service_yx6siwe";
+const EMAILJS_TEMPLATE_ID = "template_9v9vi8e";
+
 function handleSubmit(e){
   e.preventDefault();
   const form = e.target;
@@ -1160,23 +1215,21 @@ function handleSubmit(e){
   submitBtn.textContent = "SENDING...";
   clearAllErrors();
 
-  fetch(form.action, {
-    method: "POST",
-    body: new FormData(form),
-    headers: {"Accept":"application/json"}
-  })
-  .then(res => {
-    if (res.ok) {
+  const formData = new FormData(form);
+  const templateParams = {};
+  formData.forEach((value, key) => { templateParams[key] = value; });
+
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+    .then(() => {
       goTo("screen-confirm");
-    } else {
-      res.json().then(showFormspreeErrors).catch(() => showSubmitError());
-    }
-  })
-  .catch(() => showSubmitError())
-  .finally(() => {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "PUT ME ON THE LIST";
-  });
+    })
+    .catch(() => {
+      showSubmitError();
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "PUT ME ON THE LIST";
+    });
 }
 
 // Fields with a visible slot for a field-specific error message
@@ -1186,30 +1239,6 @@ function showSubmitError(message){
   const err = document.getElementById("submit-error");
   err.textContent = message || "Something went wrong sending your booking. Please check your connection and try again.";
   err.classList.add("show");
-}
-
-function showFormspreeErrors(data){
-  const errors = (data && Array.isArray(data.errors)) ? data.errors : [];
-  if (!errors.length) { showSubmitError(); return; }
-
-  let shownInline = false;
-  errors.forEach(e => {
-    const targetId = e.field && FIELD_ERROR_IDS[e.field];
-    if (targetId) {
-      const el = document.getElementById(targetId);
-      el.textContent = e.message || "This field looks invalid.";
-      el.classList.add("show");
-      shownInline = true;
-    }
-  });
-
-  // Errors without a matching field (e.g. spam filtering, general form errors)
-  const generalMessages = errors.filter(e => !e.field || !FIELD_ERROR_IDS[e.field]).map(e => e.message).filter(Boolean);
-  if (generalMessages.length) {
-    showSubmitError(generalMessages.join(", "));
-  } else if (!shownInline) {
-    showSubmitError();
-  }
 }
 
 function clearAllErrors(){
