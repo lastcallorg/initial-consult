@@ -492,6 +492,8 @@ body {
 .put-me-btn { font-family:"Lacquer",cursive; font-size:1.4rem; letter-spacing:0.12em; color:var(--black); background:var(--blue-white); border:2px solid var(--blue-white); padding:1rem 2.4rem; cursor:pointer; text-transform:uppercase; border-radius:4px; transition:all 0.2s ease; box-shadow:0 0 16px rgba(200,230,255,0.4); margin-top:0.5rem; }
 .put-me-btn:disabled { opacity:0.4; cursor:not-allowed; box-shadow:none; }
 .put-me-btn:not(:disabled):hover { background:var(--white); box-shadow:0 0 28px var(--blue-glow); }
+.submit-error-text { display:none; font-family:"Special Elite",serif; font-size:0.85rem; color:var(--red-neon); text-shadow:0 0 6px rgba(255,26,26,0.4); margin-top:0.4rem; }
+.submit-error-text.show { display:block; }
 .trainee-note { font-family:"Special Elite",serif; font-size:0.75rem; color:var(--grey-dim); line-height:1.6; max-width:500px; text-align:center; border-top:1px solid #222; padding-top:0.8rem; }
 
 /* ════════════════════════════════
@@ -909,7 +911,7 @@ body {
 <section class="screen" id="screen-booking">
   <button class="nav-back" onclick="goTo('screen-handle')">← back</button>
   <h2 class="booking-title">PUT ME ON THE LIST</h2>
-  <form class="booking-form" id="booking-form" action="https://formspree.io/YOUR_FORMSPREE_ID" method="POST" onsubmit="handleSubmit(event)">
+  <form class="booking-form" id="booking-form" action="https://formspree.io/f/mykqyagr" method="POST" onsubmit="handleSubmit(event)">
     <div class="form-group">
       <label class="form-label">Your handle</label>
       <input class="form-input" type="text" name="handle" id="form-handle" readonly style="color:var(--gold);">
@@ -953,6 +955,7 @@ body {
       <input class="form-input" type="text" name="timezone" placeholder="e.g. CET, GMT, EST" required>
     </div>
     <input type="hidden" name="note" id="form-note">
+    <input type="hidden" name="_subject" id="form-subject" value="New Last Call booking">
     <div class="consent-block">
       <p class="consent-text">By booking, you confirm you have read and understood the information on the previous screen. You consent to your contact details being used solely for session confirmation and deleted after your session date. You understand this is a trainee peer-support service, not a clinical or therapeutic practice. In the event of a serious risk to life, Les may act under Article 450 NL.</p>
       <label class="consent-label">
@@ -1119,8 +1122,65 @@ function toggleSubmit(){
 
 function handleSubmit(e){
   e.preventDefault();
-  fetch(e.target.action,{method:"POST",body:new FormData(e.target),headers:{"Accept":"application/json"}}).catch(()=>{});
-  goTo("screen-confirm");
+  const form = e.target;
+  const submitBtn = document.getElementById("submit-btn");
+  const slotEl = form.querySelector('[name="slot"]');
+  const slot = slotEl ? slotEl.value : "";
+
+  // Give the notification email a clear, useful subject line
+  document.getElementById("form-subject").value =
+    "New Last Call booking — " + (state.handle || "unknown handle") + (slot ? " — " + slot : "");
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "SENDING...";
+  hideSubmitError();
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form),
+    headers: {"Accept":"application/json"}
+  })
+  .then(res => {
+    if (res.ok) {
+      goTo("screen-confirm");
+    } else {
+      res.json().then(showFormspreeError).catch(() => showSubmitError());
+    }
+  })
+  .catch(() => showSubmitError())
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "PUT ME ON THE LIST";
+  });
+}
+
+function getOrCreateSubmitError(){
+  let err = document.getElementById("submit-error");
+  if(!err){
+    err = document.createElement("p");
+    err.id = "submit-error";
+    err.className = "submit-error-text";
+    document.getElementById("booking-form").appendChild(err);
+  }
+  return err;
+}
+
+function showSubmitError(message){
+  const err = getOrCreateSubmitError();
+  err.textContent = message || "Something went wrong sending your booking. Please check your connection and try again.";
+  err.classList.add("show");
+}
+
+function showFormspreeError(data){
+  const detail = (data && data.errors && data.errors.length)
+    ? data.errors.map(x => x.message).join(", ")
+    : null;
+  showSubmitError(detail ? ("Couldn't send your booking: " + detail) : null);
+}
+
+function hideSubmitError(){
+  const err = document.getElementById("submit-error");
+  if(err) err.classList.remove("show");
 }
 
 function showConfirm(){
