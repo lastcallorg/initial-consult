@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAST CALL · with Les Ondes</title>
+
+<!-- GOOGLE FONTS — all required typefaces -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&family=Press+Start+2P&family=Square+Peg&family=Rock+Salt&family=Fasthand&family=Reenie+Beanie&family=Bitcount+Prop+Single:wght@400;700&family=Yuji+Boku&family=Tilt+Neon&family=Wallpoet&family=Stoke:wght@400&family=Schoolbell&family=Gaegu:wght@400;700&family=Nothing+You+Could+Do&family=Lacquer&family=VT323&family=Neon+Glow&display=swap" rel="stylesheet">
+
+<style>
+  /* ─── COLOUR TOKENS ─── */
+  :root {
+    --black:        #0a0a0a;
+    --near-black:   #111111;
+    --gold:         #f5c842;
+    --gold-dim:     #c9a020;
+    --blue-white:   #c8e6ff;
+    --blue-glow:    #7ec8f5;
+    --green-neon:   #39ff14;
+    --green-dark:   #00c40a;
+    --red-neon:     #ff1a1a;
+    --white:        #ffffff;
+    --off-white:    #e8e8e8;
+    --grey-dim:     #444444;
+    --grey-mid:     #777777;
+    --paper:        #f0ead8;
+    --paper-dark:   #d4c9a8;
+    --ink-blue:     #1a2a4a;
+  }
+
+  /* ─── RESET & BASE ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'Special Elite', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── SCREEN SYSTEM ─── */
+  .screen {
+    display: none;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .screen.active { display: flex; }
+
+  /* ─── SHARED TYPOGRAPHY ─── */
+  .caveat      { font-family: 'Caveat', cursive; }
+  .special-elite { font-family: 'Special Elite', serif; }
+  .press-start { font-family: 'Press Start 2P', monospace; }
+  .square-peg  { font-family: 'Square Peg', cursive; }
+  .rock-salt   { font-family: 'Rock Salt', cursive; }
+  .fasthand    { font-family: 'Fasthand', cursive; }
+  .reenie      { font-family: 'Reenie Beanie', cursive; }
+  .bitcount    { font-family: 'Bitcount Prop Single', monospace; }
+  .yuji-boku   { font-family: 'Yuji Boku', serif; }
+  .tilt-neon   { font-family: 'Tilt Neon', cursive; }
+  .wallpoet    { font-family: 'Wallpoet', cursive; }
+  .stoke       { font-family: 'Stoke', serif; }
+  .schoolbell  { font-family: 'Schoolbell', cursive; }
+  .gaegu       { font-family: 'Gaegu', cursive; }
+  .nothing-you { font-family: 'Nothing You Could Do', cursive; }
+  .lacquer     { font-family: 'Lacquer', cursive; }
+  .vt323       { font-family: 'VT323', monospace; }
+
+  /* ─── COLOUR UTILITIES ─── */
+  .gold        { color: var(--gold); }
+  .blue-white  { color: var(--blue-white); }
+  .green-neon  { color: var(--green-neon); }
+  .red-neon    { color: var(--red-neon); }
+  .off-white   { color: var(--off-white); }
+  .grey-mid    { color: var(--grey-mid); }
+
+  /* ─── NEON TEXT GLOWS ─── */
+  .glow-gold {
+    text-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold-dim), 0 0 40px var(--gold-dim);
+  }
+  .glow-blue {
+    text-shadow: 0 0 8px var(--blue-glow), 0 0 20px var(--blue-white);
+  }
+  .glow-green {
+    text-shadow: 0 0 8px var(--green-neon), 0 0 20px var(--green-dark), 0 0 40px var(--green-dark);
+  }
+  .glow-red {
+    text-shadow: 0 0 8px var(--red-neon), 0 0 20px #cc0000;
+  }
+
+  /* ─── BOXES ─── */
+  .box-gold {
+    border: 2px solid var(--gold);
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: var(--gold);
+    text-decoration: none;
+    display: inline-block;
+  }
+  .box-gold:hover, .box-gold:focus {
+    background: var(--gold);
+    color: var(--black);
+    box-shadow: 0 0 18px var(--gold), 0 0 36px var(--gold-dim);
+  }
+  .box-gold.hover-blue:hover, .box-gold.hover-blue:focus {
+    background: var(--blue-white);
+    color: var(--black);
+    border-color: var(--blue-white);
+    box-shadow: 0 0 18px var(--blue-glow);
+  }
+  .box-gold.hover-green:hover, .box-gold.hover-green:focus {
+    background: var(--green-neon);
+    color: var(--black);
+    border-color: var(--green-neon);
+    box-shadow: 0 0 18px var(--green-neon), 0 0 36px var(--green-dark);
+  }
+  .box-blue-white {
+    border: 2px solid var(--blue-white);
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: var(--blue-white);
+    display: inline-block;
+  }
+  .box-blue-white:hover {
+    background: var(--blue-white);
+    color: var(--black);
+    box-shadow: 0 0 18px var(--blue-glow);
+  }
+
+  /* ─── DIVIDERS ─── */
+  .dots-gold {
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    font-family: 'Special Elite', serif;
+    margin: 0.5rem 0;
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 1 — LANDING
+  ═══════════════════════════════════════════ */
+  #screen-landing {
+    text-align: center;
+    gap: 0.6rem;
+    position: relative;
+  }
+
+  .landing-no-names {
+    font-family: 'Caveat', cursive;
+    font-size: 1.75rem;
+    color: var(--grey-mid);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.4rem;
+  }
+
+  .landing-title {
+    font-family: 'Special Elite', serif;
+    font-size: clamp(3.5rem, 12vw, 7rem);
+    color: var(--blue-white);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-shadow: 0 0 20px var(--blue-glow), 0 0 60px rgba(126,200,245,0.4);
+  }
+
+  .landing-with {
+    font-family: 'Special Elite', serif;
+    font-size: 1.4rem;
+    color: var(--grey-mid);
+    letter-spacing: 0.2em;
+    margin-top: 0.4rem;
+  }
+
+  .landing-signature {
+    font-family: 'Fasthand', cursive;
+    font-size: 2.8rem;
+    color: var(--off-white);
+    line-height: 1;
+  }
+
+  .landing-breath-lines {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .landing-breath-line {
+    font-family: 'Caveat', cursive;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--off-white);
+    letter-spacing: 0.12em;
+  }
+
+  .landing-insert-coins {
+    margin-top: 1.6rem;
+  }
+  .landing-insert-coins button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.85rem, 3vw, 1.25rem);
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    padding: 0.9rem 1.8rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    animation: pulse-gold 2s infinite;
+  }
+  .landing-insert-coins button:hover {
+    background: var(--gold);
+    color: var(--black);
+    box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold-dim);
+    animation: none;
+  }
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 4px var(--gold-dim); }
+    50%       { box-shadow: 0 0 16px var(--gold), 0 0 30px var(--gold-dim); }
+  }
+
+  .landing-nothing-ventured {
+    margin-top: 1.8rem;
+    font-family: 'Square Peg', cursive;
+    font-size: 1.6rem;
+    color: var(--blue-white);
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px var(--blue-glow), 0 0 24px rgba(126,200,245,0.5);
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 2 — THE LOBBY (RIDDLES)
+  ═══════════════════════════════════════════ */
+  #screen-lobby {
+    gap: 1.2rem;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .lobby-title {
+    font-family: 'Special Elite', serif;
+    font-size: 2rem;
+    color: var(--blue-white);
+    text-shadow: 0 0 12px var(--blue-glow);
+    letter-spacing: 0.12em;
+  }
+
+  .lobby-before-text {
+    font-family: 'Rock Salt', cursive;
+    font-size: 0.82rem;
+    color: var(--grey-mid);
+    line-height: 2;
+    max-width: 560px;
+    text-align: left;
+  }
+
+  .lobby-riddle-prompt {
+    font-family: 'Special Elite', serif;
+    font-size: 1rem;
+    color: var(--off-white);
+    letter-spacing: 0.05em;
+  }
+  .lobby-riddle-prompt .hash {
+    color: var(--gold);
+  }
+
+  .lobby-dots {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    margin: 0.3rem 0;
+  }
+  .lobby-dot {
+    font-family: 'Special Elite', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+  }
+  .lobby-dot.active, .lobby-dot:hover {
+    color: var(--blue-white);
+    text-shadow: 0 0 10px var(--blue-glow);
+  }
+  .lobby-dot.current-page {
+    color: var(--blue-white);
+    text-shadow: 0 0 10px var(--blue-glow);
+    font-weight: bold;
+  }
+
+  .riddle-card {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    border: 1px solid var(--grey-dim);
+    border-radius: 6px;
+    width: 100%;
+  }
+  .riddle-card.active { display: flex; }
+
+  .riddle-text {
+    font-family: 'Bitcount Prop Single', monospace;
+    font-size: 1.1rem;
+    color: var(--off-white);
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 480px;
+  }
+
+  .riddle-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 420px;
+  }
+  .riddle-option {
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 1.4rem;
+    text-align: left;
+    padding: 0.6rem 1rem;
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.03em;
+  }
+  .riddle-option:hover, .riddle-option.selected {
+    background: var(--blue-white);
+    color: var(--black);
+    border-color: var(--blue-white);
+    box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .riddle-option.selected {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--gold);
+  }
+
+  .lobby-misspell-note { display: none; } /* corrected in source */
+
+  /* ═══════════════════════════════════════════
+     SCREEN 3 — FORTUNE COOKIE
+  ═══════════════════════════════════════════ */
+  #screen-fortune {
+    gap: 1.2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .fortune-title {
+    font-family: 'Special Elite', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 12px var(--gold), 0 0 24px var(--gold-dim);
+  }
+
+  .fortune-password {
+    font-family: 'Yuji Boku', serif;
+    font-size: 2rem;
+    color: var(--blue-white);
+    letter-spacing: 0.1em;
+    min-height: 2.5rem;
+    transition: all 0.3s ease;
+  }
+  .fortune-password.changing {
+    opacity: 0.3;
+    transform: scale(0.97);
+  }
+
+  .greenroom-awaits {
+    font-family: 'Tilt Neon', cursive;
+    font-size: 1rem;
+    color: #383838;
+    letter-spacing: 0.1em;
+    margin-top: 0.3rem;
+  }
+
+  /* ─── buzzing neon arrow ─── */
+  .neon-arrow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.6rem 0;
+  }
+  .neon-arrow {
+    font-size: 3rem;
+    color: var(--green-neon);
+    text-shadow: 0 0 8px var(--green-neon), 0 0 20px var(--green-dark);
+    animation: glitch-arrow 1.8s infinite;
+    line-height: 1;
+  }
+  @keyframes glitch-arrow {
+    0%  { text-shadow: 0 0 8px var(--green-neon), 0 0 20px var(--green-dark); transform: translateY(0) skewX(0deg); opacity: 1; }
+    5%  { text-shadow: 3px 0 8px var(--green-neon), -3px 0 #ff00ff; transform: translateY(-2px) skewX(2deg); opacity: 0.8; }
+    10% { text-shadow: -3px 0 8px var(--green-neon), 3px 0 #00ffff; transform: translateY(1px) skewX(-1deg); opacity: 1; }
+    15% { text-shadow: 0 0 8px var(--green-neon), 0 0 20px var(--green-dark); transform: translateY(0) skewX(0deg); }
+    40% { transform: translateY(4px); }
+    60% { transform: translateY(0); }
+    80% { transform: translateY(3px); }
+    100%{ text-shadow: 0 0 8px var(--green-neon), 0 0 20px var(--green-dark); transform: translateY(0); }
+  }
+
+  .green-room-btn {
+    font-family: 'Wallpoet', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    color: var(--green-neon);
+    text-shadow: 0 0 8px var(--green-neon), 0 0 20px var(--green-dark);
+    border: 2px solid var(--green-neon);
+    padding: 0.8rem 2rem;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgba(57,255,20,0.3);
+    transition: all 0.2s ease;
+    animation: buzz-border 2.5s infinite;
+  }
+  .green-room-btn:hover {
+    background: var(--green-neon);
+    color: var(--black);
+    text-shadow: none;
+    box-shadow: 0 0 24px var(--green-neon);
+    animation: none;
+  }
+  @keyframes buzz-border {
+    0%, 100% { box-shadow: 0 0 12px rgba(57,255,20,0.3); }
+    50%       { box-shadow: 0 0 22px rgba(57,255,20,0.6), inset 0 0 8px rgba(57,255,20,0.1); }
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 4 — THE GREENROOM
+  ═══════════════════════════════════════════ */
+  #screen-greenroom {
+    gap: 1.2rem;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .greenroom-title {
+    font-family: 'Special Elite', serif;
+    font-size: 1.8rem;
+    color: var(--green-neon);
+    text-shadow: 0 0 12px var(--green-neon), 0 0 30px var(--green-dark);
+    letter-spacing: 0.15em;
+  }
+
+  .greenroom-flicker-text {
+    font-family: 'Rock Salt', cursive;
+    font-size: 0.9rem;
+    color: var(--off-white);
+    line-height: 1.8;
+    max-width: 540px;
+    text-align: left;
+    animation: flicker 8s infinite;
+  }
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96%            { opacity: 0.7; }
+    97%            { opacity: 1; }
+    98%            { opacity: 0.5; }
+    99%            { opacity: 1; }
+  }
+
+  /* token cards */
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 640px;
+  }
+  .token-card {
+    border: 2px solid var(--gold);
+    border-radius: 6px;
+    padding: 1rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+    background: transparent;
+    position: relative;
+    user-select: none;
+  }
+  .token-card:hover, .token-card.selected {
+    border-color: var(--green-neon);
+    background: rgba(57,255,20,0.06);
+    box-shadow: 0 0 14px rgba(57,255,20,0.3);
+  }
+  .token-card.selected {
+    background: rgba(57,255,20,0.12);
+  }
+  .token-name {
+    font-family: 'Stoke', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .token-card.selected .token-name {
+    color: var(--green-neon);
+    text-shadow: 0 0 8px var(--green-neon);
+  }
+  .token-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin: 0.3rem auto;
+    display: block;
+    opacity: 0.85;
+  }
+  .token-qualities {
+    font-family: 'Schoolbell', cursive;
+    font-size: 0.88rem;
+    color: var(--off-white);
+    line-height: 1.6;
+    margin-top: 0.4rem;
+  }
+  .token-quality-pos { color: var(--gold); }
+  .token-quality-neg { color: var(--grey-mid); }
+
+  .drag-zone {
+    border: 2px dashed var(--green-neon);
+    border-radius: 8px;
+    padding: 1.2rem;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+  .drag-zone.drag-over {
+    background: rgba(57,255,20,0.1);
+    box-shadow: 0 0 20px rgba(57,255,20,0.3);
+  }
+  .drag-zone-label {
+    font-family: 'Gaegu', cursive;
+    font-size: 1.3rem;
+    color: var(--green-neon);
+    letter-spacing: 0.05em;
+  }
+  .drag-zone-hint {
+    font-family: 'Schoolbell', cursive;
+    font-size: 0.85rem;
+    color: var(--grey-mid);
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 5 — ALMOST THERE (HANDLE)
+  ═══════════════════════════════════════════ */
+  #screen-handle {
+    gap: 1.2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .handle-title {
+    font-family: 'Special Elite', serif;
+    font-size: 2rem;
+    color: var(--blue-white);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--blue-glow), 0 0 24px rgba(126,200,245,0.4);
+  }
+
+  .handle-subtitle {
+    font-family: 'Lacquer', cursive;
+    font-size: 1rem;
+    color: var(--off-white);
+    line-height: 1.8;
+    max-width: 500px;
+    /* Lacquer drip effect: random caps injected via JS */
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 6 — LEAVE A NOTE
+  ═══════════════════════════════════════════ */
+  #screen-note {
+    gap: 1.2rem;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .note-title {
+    font-family: 'Nothing You Could Do', cursive;
+    font-size: 1.8rem;
+    color: var(--blue-white);
+    text-shadow: 0 0 8px var(--blue-glow);
+    letter-spacing: 0.05em;
+  }
+
+  .note-subtitle {
+    font-family: 'Special Elite', serif;
+    font-size: 0.95rem;
+    color: var(--grey-mid);
+    line-height: 1.7;
+  }
+
+  /* torn notebook paper effect */
+  .notebook-paper {
+    background: var(--paper);
+    color: var(--ink-blue);
+    border-radius: 0;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    padding: 0;
+    box-shadow: 2px 4px 20px rgba(0,0,0,0.7), -1px 2px 8px rgba(0,0,0,0.3);
+    margin-top: 0.5rem;
+  }
+  /* torn top edge */
+  .notebook-torn-top {
+    height: 22px;
+    background: var(--paper);
+    clip-path: polygon(
+      0% 100%, 2% 40%, 5% 90%, 9% 20%, 13% 70%, 17% 10%, 21% 60%,
+      25% 0%, 29% 55%, 33% 15%, 37% 75%, 41% 30%, 45% 80%, 49% 10%,
+      53% 65%, 57% 25%, 61% 85%, 65% 35%, 69% 80%, 73% 20%,
+      77% 60%, 81% 5%, 85% 50%, 89% 15%, 93% 70%, 97% 30%, 100% 50%, 100% 100%
+    );
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.3);
+  }
+  .notebook-header {
+    background: #e0cfaa;
+    border-bottom: 3px solid var(--paper-dark);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .notebook-header-text {
+    font-family: 'Special Elite', serif;
+    font-size: 0.75rem;
+    color: #6b5b3a;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .notebook-red-line {
+    position: absolute;
+    left: 3.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(200,60,60,0.4);
+    pointer-events: none;
+  }
+  .notebook-holes {
+    position: absolute;
+    left: 1.1rem;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    pointer-events: none;
+  }
+  .notebook-hole {
+    width: 18px;
+    height: 18px;
+    background: var(--black);
+    border-radius: 50%;
+    border: 1px solid #b8a880;
+  }
+  .notebook-body {
+    padding: 1rem 1rem 1rem 4rem;
+    position: relative;
+    min-height: 180px;
+  }
+  /* ruled lines */
+  .notebook-body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      transparent,
+      transparent calc(2rem - 1px),
+      rgba(100,150,200,0.25) calc(2rem - 1px),
+      rgba(100,150,200,0.25) 2rem
+    );
+    pointer-events: none;
+  }
+  .notebook-textarea {
+    font-family: 'Gaegu', cursive;
+    font-size: 1.15rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink-blue);
+    width: 100%;
+    min-height: 150px;
+    resize: vertical;
+    line-height: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  /* torn bottom edge */
+  .notebook-torn {
+    height: 28px;
+    background: var(--paper);
+    clip-path: polygon(
+      0% 0%, 3% 60%, 7% 10%, 11% 80%, 15% 20%, 19% 90%, 23% 30%,
+      27% 100%, 31% 40%, 35% 80%, 39% 15%, 43% 70%, 47% 5%,
+      51% 85%, 55% 25%, 59% 95%, 63% 35%, 67% 75%, 71% 10%,
+      75% 90%, 79% 30%, 83% 65%, 87% 0%, 91% 55%, 95% 20%, 100% 50%, 100% 0%
+    );
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 7 — BEFORE YOU BOOK (BRIEF)
+  ═══════════════════════════════════════════ */
+  #screen-brief {
+    gap: 1.2rem;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .brief-title {
+    font-family: 'Special Elite', serif;
+    font-size: 1.8rem;
+    color: var(--red-neon);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-style: italic;
+    text-decoration: underline;
+    text-shadow: 0 0 12px var(--red-neon), 0 0 28px #cc0000, 0 0 48px rgba(255,26,26,0.3);
+    text-align: center;
+  }
+
+  .brief-body {
+    font-family: 'VT323', monospace;
+    font-size: 1.45rem;
+    color: var(--white);
+    line-height: 1.75;
+    font-style: italic;
+  }
+
+  .brief-body .brief-last-line {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: normal;
+  }
+
+  .brief-ready-btn {
+    font-family: 'Special Elite', serif;
+    font-size: 1rem;
+    color: var(--red-neon);
+    border: 2px solid var(--red-neon);
+    background: transparent;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 8px var(--red-neon);
+    box-shadow: 0 0 8px rgba(255,26,26,0.3);
+    text-transform: uppercase;
+    align-self: center;
+  }
+  .brief-ready-btn:hover {
+    background: var(--red-neon);
+    color: var(--black);
+    text-shadow: none;
+    box-shadow: 0 0 20px var(--red-neon);
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 8 — BOOKING
+  ═══════════════════════════════════════════ */
+  #screen-booking {
+    gap: 1.2rem;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .booking-title {
+    font-family: 'Special Elite', serif;
+    font-size: 1.6rem;
+    color: var(--blue-white);
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 10px var(--blue-glow);
+  }
+
+  .booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .form-label {
+    font-family: 'Special Elite', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .form-input, .form-select {
+    font-family: 'Special Elite', serif;
+    font-size: 0.95rem;
+    background: #1a1a1a;
+    border: 1px solid var(--grey-dim);
+    color: var(--off-white);
+    padding: 0.6rem 0.8rem;
+    border-radius: 3px;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--blue-white);
+    box-shadow: 0 0 6px rgba(200,230,255,0.2);
+  }
+
+  .consent-block {
+    border: 1px solid var(--grey-dim);
+    padding: 1rem;
+    border-radius: 4px;
+    background: #0f0f0f;
+  }
+  .consent-text {
+    font-family: 'Special Elite', serif;
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+    line-height: 1.6;
+    margin-bottom: 0.6rem;
+  }
+  .consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    cursor: pointer;
+    font-family: 'Special Elite', serif;
+    font-size: 0.85rem;
+    color: var(--off-white);
+  }
+  .consent-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .submit-btn {
+    font-family: 'Lacquer', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    color: var(--black);
+    background: var(--blue-white);
+    border: 2px solid var(--blue-white);
+    padding: 0.9rem 2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 12px rgba(200,230,255,0.3);
+  }
+  .submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .submit-btn:not(:disabled):hover {
+    background: var(--white);
+    box-shadow: 0 0 20px var(--blue-glow);
+  }
+
+  /* ─── PUT ME ON THE LIST ─── */
+  .put-me-btn {
+    font-family: 'Lacquer', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.12em;
+    color: var(--black);
+    background: var(--blue-white);
+    border: 2px solid var(--blue-white);
+    padding: 1rem 2.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 16px rgba(200,230,255,0.4);
+    margin-top: 0.5rem;
+  }
+  .put-me-btn:hover {
+    background: var(--white);
+    box-shadow: 0 0 28px var(--blue-glow);
+  }
+
+  /* ─── SCREENING ─── */
+  .screening-block {
+    width: 100%;
+    text-align: left;
+  }
+  .screening-q {
+    font-family: 'Special Elite', serif;
+    font-size: 0.95rem;
+    color: var(--off-white);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  .screening-opts {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .screening-opt {
+    font-family: 'Special Elite', serif;
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--grey-dim);
+    background: transparent;
+    color: var(--off-white);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+  }
+  .screening-opt:hover, .screening-opt.selected {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .screening-opt.bad {
+    border-color: var(--red-neon);
+    color: var(--red-neon);
+  }
+
+  .crisis-box {
+    display: none;
+    background: #1a0000;
+    border: 2px solid var(--red-neon);
+    border-radius: 4px;
+    padding: 1rem;
+    color: var(--off-white);
+    font-family: 'Special Elite', serif;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    text-align: left;
+  }
+  .crisis-box.show { display: block; }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 9 — CONFIRMATION
+  ═══════════════════════════════════════════ */
+  #screen-confirm {
+    gap: 1.2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .confirm-stamp {
+    font-family: 'Special Elite', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+    border: 4px solid var(--gold);
+    padding: 0.5rem 1.5rem;
+    display: inline-block;
+    letter-spacing: 0.15em;
+    transform: rotate(-3deg);
+    text-shadow: 0 0 10px var(--gold-dim);
+    box-shadow: 0 0 16px var(--gold-dim);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .confirm-stamp.show { opacity: 1; }
+  .confirm-letter {
+    font-family: 'Special Elite', serif;
+    font-size: 0.95rem;
+    color: var(--off-white);
+    line-height: 1.8;
+    text-align: left;
+    max-width: 520px;
+    padding: 1.2rem;
+    border: 1px solid var(--grey-dim);
+    border-radius: 4px;
+  }
+  .confirm-letter em {
+    font-family: 'Fasthand', cursive;
+    font-size: 1.4rem;
+    color: var(--off-white);
+  }
+  .confirm-sig {
+    font-family: 'Square Peg', cursive;
+    font-size: 1.6rem;
+    color: var(--blue-white);
+    text-shadow: 0 0 8px var(--blue-glow);
+  }
+
+  /* ═══════════════════════════════════════════
+     SHARED FOOTER BITS
+  ═══════════════════════════════════════════ */
+  .nothing-ventured {
+    font-family: 'Square Peg', cursive;
+    font-size: 1.5rem;
+    color: var(--blue-white);
+    text-shadow: 0 0 10px var(--blue-glow), 0 0 24px rgba(126,200,245,0.4);
+    letter-spacing: 0.08em;
+    margin-top: 0.8rem;
+  }
+
+  /* ─── TRAINEE DISCLOSURE SMALL TEXT ─── */
+  .trainee-note {
+    font-family: 'Special Elite', serif;
+    font-size: 0.75rem;
+    color: var(--grey-dim);
+    line-height: 1.6;
+    max-width: 500px;
+    text-align: center;
+    border-top: 1px solid #222;
+    padding-top: 0.8rem;
+  }
+
+  /* ─── NAV BREADCRUMB ─── */
+  .nav-back {
+    font-family: 'Special Elite', serif;
+    font-size: 0.8rem;
+    color: var(--grey-dim);
+    cursor: pointer;
+    align-self: flex-start;
+    padding: 0.3rem 0;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+  }
+  .nav-back:hover { color: var(--gold); }
+
+  /* ─── HANDLE DISPLAY ─── */
+  .handle-display {
+    font-family: 'Gaegu', cursive;
+    font-size: 2rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    min-height: 2.5rem;
+    text-shadow: 0 0 8px var(--gold-dim);
+  }
+
+  /* ═══════════════════════════════════════════
+     UTILITY
+  ═══════════════════════════════════════════ */
+  .text-center { text-align: center; }
+  .mt-sm { margin-top: 0.5rem; }
+  .mt-md { margin-top: 1rem; }
+  .mt-lg { margin-top: 1.5rem; }
+
+  button { font-size: inherit; }
+
+  @media (max-width: 480px) {
+    .landing-title { font-size: 3rem; }
+    .token-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 1 — LANDING
+═══════════════════════════════════════════════════════════ -->
+<section class="screen active" id="screen-landing">
+
+  <p class="landing-no-names">no names · no wrong answers</p>
+
+  <h1 class="landing-title">LAST CALL</h1>
+
+  <div style="margin-top:0.5rem;">
+    <p class="landing-with">with</p>
+    <p class="landing-signature">Les Ondes</p>
+  </div>
+
+  <div class="landing-breath-lines">
+    <span class="landing-breath-line">ONE VOICE – LATE NITE</span>
+    <span class="landing-breath-line">BREATH OUT – DIAL IN</span>
+  </div>
+
+  <div class="landing-insert-coins">
+    <button onclick="goTo('screen-lobby')">INSERT COINS</button>
+  </div>
+
+  <p class="landing-nothing-ventured">· · · nothing ventured · · ·</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 2 — THE LOBBY
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-lobby">
+
+  <button class="nav-back" onclick="goTo('screen-landing')">← back</button>
+
+  <h2 class="lobby-title">THE LOBBY</h2>
+
+  <p class="lobby-before-text">
+    Before we begin — this is a safe space.<br>
+    No recordings. No real names. No clipboard.<br>
+    Just a frequency. Just you, for twenty minutes.<br><br>
+    To find your place in the room — four questions first.<br>
+    No right answers. Pick the one that fits.
+  </p>
+
+  <!-- riddle nav dots -->
+  <div style="margin:0.5rem 0;">
+    <p class="lobby-riddle-prompt">
+      riddle <span class="hash">#</span>&nbsp;
+      <span class="lobby-dot current-page" id="dot-1" onclick="showRiddle(0)">1.</span>
+      <span class="lobby-dot" id="dot-2" onclick="showRiddle(1)">2.</span>
+      <span class="lobby-dot" id="dot-3" onclick="showRiddle(2)">3.</span>
+      <span class="lobby-dot" id="dot-4" onclick="showRiddle(3)">4.</span>
+    </p>
+  </div>
+
+  <!-- RIDDLE CARDS — font: Bitcount for question, Reenie Beanie for answers -->
+  <div class="riddle-card active" id="riddle-0">
+    <p class="riddle-text">
+      I move without moving.<br>
+      I speak without sound.<br>
+      The uninvited guest who never leaves the room.<br>
+      What am I?
+    </p>
+    <div class="riddle-options">
+      <button class="riddle-option" onclick="selectAnswer(0, 'D', this)">The decision you keep putting off</button>
+      <button class="riddle-option" onclick="selectAnswer(0, 'I', this)">The feeling underneath the feeling</button>
+      <button class="riddle-option" onclick="selectAnswer(0, 'S', this)">The moment you almost said it</button>
+      <button class="riddle-option" onclick="selectAnswer(0, 'C', this)">The pattern you finally named</button>
+    </div>
+  </div>
+
+  <div class="riddle-card" id="riddle-1">
+    <p class="riddle-text">
+      I am loudest when no one is watching.<br>
+      I live in the space between what you said<br>
+      and what you meant.<br>
+      I am what you carry when you walk in a room.<br>
+      What am I?
+    </p>
+    <div class="riddle-options">
+      <button class="riddle-option" onclick="selectAnswer(1, 'D', this)">Reputation</button>
+      <button class="riddle-option" onclick="selectAnswer(1, 'I', this)">Presence</button>
+      <button class="riddle-option" onclick="selectAnswer(1, 'S', this)">History</button>
+      <button class="riddle-option" onclick="selectAnswer(1, 'C', this)">Intention</button>
+    </div>
+  </div>
+
+  <div class="riddle-card" id="riddle-2">
+    <p class="riddle-text">
+      A door that opens only from the inside.<br>
+      A key that can't be lent.<br>
+      You've had it all along.<br>
+      You forgot it was yours.<br>
+      What is it?
+    </p>
+    <div class="riddle-options">
+      <button class="riddle-option" onclick="selectAnswer(2, 'D', this)">The will to change course</button>
+      <button class="riddle-option" onclick="selectAnswer(2, 'I', this)">The permission to feel it</button>
+      <button class="riddle-option" onclick="selectAnswer(2, 'S', this)">The trust that someone's listening</button>
+      <button class="riddle-option" onclick="selectAnswer(2, 'C', this)">The clarity to name what's wrong</button>
+    </div>
+  </div>
+
+  <div class="riddle-card" id="riddle-3">
+    <p class="riddle-text">
+      I'm the last thing you do before you sleep.<br>
+      The first thing you reach for when you wake.<br>
+      You know I don't help. You do it anyway.<br>
+      What am I?
+    </p>
+    <div class="riddle-options">
+      <button class="riddle-option" onclick="selectAnswer(3, 'D', this)">The plan you revise instead of starting</button>
+      <button class="riddle-option" onclick="selectAnswer(3, 'I', this)">The conversation you rehearse alone</button>
+      <button class="riddle-option" onclick="selectAnswer(3, 'S', this)">The scroll through something that gives nothing back</button>
+      <button class="riddle-option" onclick="selectAnswer(3, 'C', this)">The analysis that never becomes action</button>
+    </div>
+  </div>
+
+  <div id="lobby-next-btn" style="display:none; margin-top:1rem;">
+    <button class="box-gold hover-blue" onclick="goTo('screen-fortune')" style="font-family:'Special Elite',serif;font-size:1rem;letter-spacing:0.1em;">
+      THE FORTUNE COOKIE →
+    </button>
+  </div>
+
+  <p class="nothing-ventured">· · · nothing ventured · · ·</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 3 — FORTUNE COOKIE
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-fortune">
+
+  <button class="nav-back" onclick="goTo('screen-lobby')">← back</button>
+
+  <p class="fortune-title">THE FORTUNE COOKIE</p>
+
+  <p style="font-family:'Special Elite',serif;font-size:0.9rem;color:var(--grey-mid);line-height:1.7;max-width:480px;text-align:center;">
+    Every shift, one phrase.<br>
+    This is your passphrase — your way through the door.<br>
+    Keep it. You'll need it.
+  </p>
+
+  <p class="fortune-password" id="fortune-phrase">loading...</p>
+
+  <p class="greenroom-awaits">the greenroom awaits...</p>
+
+  <!-- buzzing glitchy arrow pointing down at green room button -->
+  <div class="neon-arrow-container">
+    <span class="neon-arrow">↓</span>
+  </div>
+
+  <button class="green-room-btn" onclick="goTo('screen-greenroom')">GREEN ROOM</button>
+
+  <p class="nothing-ventured">· · · nothing ventured · · ·</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 4 — THE GREENROOM
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-greenroom">
+
+  <button class="nav-back" onclick="goTo('screen-fortune')">← back</button>
+
+  <h2 class="greenroom-title">THE GREENROOM</h2>
+
+  <p class="greenroom-flicker-text">
+    You made it through the door.<br>
+    This is the room before the room.<br>
+    Quiet. Low light. The record's already playing.
+  </p>
+
+  <!-- TOKEN GRID (drag-enabled cards) -->
+  <div class="token-grid" id="token-grid">
+
+    <div class="token-card" id="token-world" draggable="true" ondragstart="dragStart(event,'THE WORLD')" onclick="selectToken('THE WORLD', this)">
+      <p class="token-name">THE WORLD</p>
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#2a1a4a,#4a2a6a);border-radius:4px;margin:0.3rem auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🌍</div>
+      <div class="token-qualities">
+        <span class="token-quality-pos">+ Integration · completion</span><br>
+        <span class="token-quality-neg">— Resistance to ending</span>
+      </div>
+    </div>
+
+    <div class="token-card" id="token-chariot" draggable="true" ondragstart="dragStart(event,'THE CHARIOT')" onclick="selectToken('THE CHARIOT', this)">
+      <p class="token-name">THE CHARIOT</p>
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#1a2a4a,#2a4a6a);border-radius:4px;margin:0.3rem auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🏹</div>
+      <div class="token-qualities">
+        <span class="token-quality-pos">+ Drive · momentum</span><br>
+        <span class="token-quality-neg">— Control at the cost of ease</span>
+      </div>
+    </div>
+
+    <div class="token-card" id="token-temperance" draggable="true" ondragstart="dragStart(event,'TEMPERANCE')" onclick="selectToken('TEMPERANCE', this)">
+      <p class="token-name">TEMPERANCE</p>
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#1a3a2a,#2a5a3a);border-radius:4px;margin:0.3rem auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">⚖️</div>
+      <div class="token-qualities">
+        <span class="token-quality-pos">+ Balance · patience</span><br>
+        <span class="token-quality-neg">— Avoiding what needs disruption</span>
+      </div>
+    </div>
+
+    <div class="token-card" id="token-hermit" draggable="true" ondragstart="dragStart(event,'THE HERMIT')" onclick="selectToken('THE HERMIT', this)">
+      <p class="token-name">THE HERMIT</p>
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#2a2a1a,#4a4a2a);border-radius:4px;margin:0.3rem auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🕯️</div>
+      <div class="token-qualities">
+        <span class="token-quality-pos">+ Wisdom · inner clarity</span><br>
+        <span class="token-quality-neg">— Isolation as a habit</span>
+      </div>
+    </div>
+
+    <div class="token-card" id="token-emperor" draggable="true" ondragstart="dragStart(event,'THE EMPEROR')" onclick="selectToken('THE EMPEROR', this)">
+      <p class="token-name">THE EMPEROR</p>
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#3a1a1a,#5a2a2a);border-radius:4px;margin:0.3rem auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">👑</div>
+      <div class="token-qualities">
+        <span class="token-quality-pos">+ Authority · structure</span><br>
+        <span class="token-quality-neg">— Rigidity when flex is needed</span>
+      </div>
+    </div>
+
+    <div class="token-card" id="token-magician" draggable="true" ondragstart="dragStart(event,'THE MAGICIAN')" onclick="selectToken('THE MAGICIAN', this)">
+      <p class="token-name">THE MAGICIAN</p>
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#1a1a3a,#2a2a5a);border-radius:4px;margin:0.3rem auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">✨</div>
+      <div class="token-qualities">
+        <span class="token-quality-pos">+ Skill · resourcefulness</span><br>
+        <span class="token-quality-neg">— Using talent to avoid depth</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DRAG TO "THIS IS MY TOKEN" -->
+  <div class="drag-zone" id="drop-zone"
+       ondragover="dragOver(event)"
+       ondragleave="dragLeave(event)"
+       ondrop="dropToken(event)">
+    <p class="drag-zone-label" id="drop-zone-label">this is my token</p>
+    <p class="drag-zone-hint" id="drop-zone-hint">drag your card here — or tap to select</p>
+  </div>
+
+  <div id="greenroom-next" style="display:none;margin-top:0.5rem;">
+    <button class="box-gold hover-green" onclick="goTo('screen-handle')" style="font-family:'Special Elite',serif;font-size:1rem;letter-spacing:0.1em;">
+      INTO THE ROOM →
+    </button>
+  </div>
+
+  <p class="nothing-ventured">· · · nothing ventured · · ·</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 5 — ALMOST THERE (HANDLE)
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-handle">
+
+  <button class="nav-back" onclick="goTo('screen-greenroom')">← back</button>
+
+  <h2 class="handle-title">ALMOST THERE...</h2>
+
+  <p style="font-family:'Special Elite',serif;font-size:0.85rem;color:var(--grey-mid);letter-spacing:0.1em;">YOUR HANDLE FOR TONIGHT</p>
+
+  <p class="handle-display" id="handle-display">—</p>
+
+  <p class="handle-subtitle" id="handle-subtitle">
+    This is how Les knows you.<br>
+    It travels no further than this room.<br>
+    Write it down if you want — but it's yours regardless.
+  </p>
+
+  <div style="margin-top:1rem;">
+    <button class="box-gold hover-blue" onclick="goTo('screen-note')" style="font-family:'Special Elite',serif;font-size:1rem;letter-spacing:0.1em;">
+      LEAVE A NOTE →
+    </button>
+  </div>
+
+  <p class="nothing-ventured">· · · nothing ventured · · ·</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 6 — LEAVE A NOTE
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-note">
+
+  <button class="nav-back" onclick="goTo('screen-handle')">← back</button>
+
+  <p class="note-title">leave a note behind the bar...</p>
+
+  <p class="note-subtitle">Need to leave a note for Les? — Jot it down here and it will get to him, guaranteed.</p>
+
+  <!-- torn notebook paper -->
+  <div class="notebook-paper">
+    <div class="notebook-torn-top"></div>
+    <div class="notebook-header">
+      <span class="notebook-header-text">LAST CALL | MEMO</span>
+    </div>
+    <div class="notebook-holes">
+      <div class="notebook-hole"></div>
+      <div class="notebook-hole"></div>
+      <div class="notebook-hole"></div>
+    </div>
+    <div class="notebook-red-line"></div>
+    <div class="notebook-body">
+      <textarea class="notebook-textarea" id="caller-note" placeholder="Anything you want him to know before you start..."></textarea>
+    </div>
+    <div class="notebook-torn"></div>
+  </div>
+
+  <div style="margin-top:1rem;">
+    <button class="box-gold hover-blue" onclick="goTo('screen-brief')" style="font-family:'Special Elite',serif;font-size:1rem;letter-spacing:0.1em;">
+      BEFORE YOU BOOK →
+    </button>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 7 — BEFORE YOU BOOK (BRIEF / CONSENT)
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-brief">
+
+  <button class="nav-back" onclick="goTo('screen-note')">← back</button>
+
+  <h2 class="brief-title">BEFORE YOU BOOK</h2>
+
+  <div class="brief-body">
+    <p>Les / Colin is a student at the Academie voor Coaching en Counselling (ACC), Amsterdam, completing Year 1. Last Call is a supervised trainee practice. It is not a clinical or therapeutic service.</p>
+    <br>
+    <p>This is a space for honest conversation — not diagnosis, not therapy, not crisis support. If you are experiencing a mental health emergency, please contact 113 (suicide prevention), 112 (emergency services), or Veilig Thuis on 0800-2000.</p>
+    <br>
+    <p>In the rare event of a serious risk to life, Les may need to act — Article 450 NL applies. This is the only exception to anonymity.</p>
+    <br>
+    <p>Sessions are not recorded. No real names are stored. Your email is used for confirmation only and deleted after your session date.</p>
+    <br>
+    <p class="brief-last-line">Your call. Your twenty minutes. His full attention.</p>
+  </div>
+
+  <button class="brief-ready-btn" onclick="goTo('screen-booking')">I AM READY</button>
+
+  <p class="nothing-ventured">· · · nothing ventured · · ·</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 8 — BOOKING
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-booking">
+
+  <button class="nav-back" onclick="goTo('screen-brief')">← back</button>
+
+  <h2 class="booking-title">PUT ME ON THE LIST</h2>
+
+  <!-- Safety screening -->
+  <div class="screening-block" id="screening">
+    <p style="font-family:'Special Elite',serif;font-size:0.85rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.8rem;">Three quick questions first —</p>
+
+    <p class="screening-q">Are you currently experiencing thoughts of harming yourself or others?</p>
+    <div class="screening-opts">
+      <button class="screening-opt" onclick="screen(1,'no',this)">No</button>
+      <button class="screening-opt" onclick="screen(1,'yes',this)">Yes</button>
+    </div>
+
+    <p class="screening-q">Are you in a safe place right now?</p>
+    <div class="screening-opts">
+      <button class="screening-opt" onclick="screen(2,'yes',this)">Yes</button>
+      <button class="screening-opt" onclick="screen(2,'no',this)">Not quite</button>
+    </div>
+
+    <p class="screening-q">Are you currently under the care of a psychiatrist, psychologist, or addiction specialist for an active condition?</p>
+    <div class="screening-opts">
+      <button class="screening-opt" onclick="screen(3,'no',this)">No</button>
+      <button class="screening-opt" onclick="screen(3,'yes',this)">Yes</button>
+    </div>
+  </div>
+
+  <div class="crisis-box" id="crisis-box">
+    <strong style="color:var(--red-neon);">Please reach out for immediate support:</strong><br><br>
+    🆘 113 — Suicide Prevention (NL)<br>
+    🚨 112 — Emergency Services<br>
+    🏠 Veilig Thuis — 0800-2000 (domestic safety)<br>
+    🏥 Your huisarts (GP) is always the right first call.<br><br>
+    Last Call is here for you when you're in a safer place.
+  </div>
+
+  <!-- booking form — only shown when screening passes -->
+  <form class="booking-form" id="booking-form" action="https://formspree.io/YOUR_FORMSPREE_ID" method="POST" style="display:none;" onsubmit="handleSubmit(event)">
+
+    <div class="form-group">
+      <label class="form-label">Your handle (from your token)</label>
+      <input class="form-input" type="text" name="handle" id="form-handle" readonly style="color:var(--gold);">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Your passphrase</label>
+      <input class="form-input" type="text" name="passphrase" id="form-passphrase" readonly style="color:var(--gold);">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email (for confirmation only)</label>
+      <input class="form-input" type="email" name="email" placeholder="yours@wherever.com" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Choose your slot</label>
+      <select class="form-select" name="slot" required>
+        <option value="">— pick a time —</option>
+        <option value="Tue 21:00 CET">Tuesday 21:00 CET</option>
+        <option value="Tue 21:30 CET">Tuesday 21:30 CET</option>
+        <option value="Tue 22:00 CET">Tuesday 22:00 CET</option>
+        <option value="Tue 22:30 CET">Tuesday 22:30 CET</option>
+        <option value="Wed 21:00 CET">Wednesday 21:00 CET</option>
+        <option value="Wed 21:30 CET">Wednesday 21:30 CET</option>
+        <option value="Wed 22:00 CET">Wednesday 22:00 CET</option>
+        <option value="Wed 22:30 CET">Wednesday 22:30 CET</option>
+        <option value="Thu 21:00 CET">Thursday 21:00 CET</option>
+        <option value="Thu 21:30 CET">Thursday 21:30 CET</option>
+        <option value="Thu 22:00 CET">Thursday 22:00 CET</option>
+        <option value="Thu 22:30 CET">Thursday 22:30 CET</option>
+        <option value="Fri 21:00 CET">Friday 21:00 CET</option>
+        <option value="Fri 21:30 CET">Friday 21:30 CET</option>
+        <option value="Fri 22:00 CET">Friday 22:00 CET</option>
+        <option value="Fri 22:30 CET">Friday 22:30 CET</option>
+        <option value="Sat 21:00 CET">Saturday 21:00 CET</option>
+        <option value="Sat 21:30 CET">Saturday 21:30 CET</option>
+        <option value="Sat 22:00 CET">Saturday 22:00 CET</option>
+        <option value="Sat 22:30 CET">Saturday 22:30 CET</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Your timezone</label>
+      <input class="form-input" type="text" name="timezone" placeholder="e.g. CET, GMT, EST" required>
+    </div>
+
+    <!-- pre-filled note from earlier -->
+    <input type="hidden" name="note" id="form-note">
+
+    <div class="consent-block">
+      <p class="consent-text">
+        By booking, you confirm you have read and understood the information on the previous screen. You consent to your contact details being used solely for session confirmation and deleted after your session date. You understand this is a trainee peer-support service, not a clinical or therapeutic practice. In the event of a serious risk to life, Les may act under Article 450 NL.
+      </p>
+      <label class="consent-label">
+        <input type="checkbox" id="consent-check" onchange="toggleSubmit()">
+        I understand and I'm ready to show up.
+      </label>
+    </div>
+
+    <!-- the big button — blue-white box, black lacquer text -->
+    <button type="submit" class="put-me-btn" id="submit-btn" disabled>PUT ME ON THE LIST</button>
+
+  </form>
+
+  <p class="trainee-note">
+    Les / Colin is a Year 1 ACC student. Last Call is a supervised trainee practice.<br>
+    Not a clinical or therapeutic service.<br>
+    Emergency: 113 · 112 · Veilig Thuis 0800-2000
+  </p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCREEN 9 — CONFIRMATION
+═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-confirm">
+
+  <div class="confirm-stamp" id="confirm-stamp">ON THE LIST</div>
+
+  <div class="confirm-letter">
+    <p id="confirm-handle-line" style="font-family:'Gaegu',cursive;font-size:1.3rem;color:var(--gold);margin-bottom:0.8rem;"></p>
+    <p>You made it through the door.</p>
+    <p>That already took something — more than you probably think.</p>
+    <br>
+    <p>Your twenty is locked in.</p>
+    <p>A confirmation is on its way to your inbox.</p>
+    <br>
+    <p>Find somewhere quiet. Doesn't have to be perfect — just somewhere that's yours for twenty minutes.</p>
+    <br>
+    <p>The jazz will be playing when you arrive. Les will be there. The mic will be hot.</p>
+    <br>
+    <p>You just need to show up. That's the whole job.</p>
+    <br>
+    <p style="font-family:'Square Peg',cursive;font-size:1.4rem;color:var(--blue-white);text-shadow:0 0 8px var(--blue-glow);">· · · nothing ventured · · ·</p>
+    <br>
+    <p><em>Les Ondes</em> · Last Call</p>
+    <p style="font-family:'Special Elite',serif;font-size:0.8rem;color:var(--grey-mid);margin-top:0.3rem;font-style:italic;">[This note exists only for you. It won't make sense to anyone else. That's intentional.]</p>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script>
+/* ─── STATE ─── */
+const state = {
+  discScores: { D: 0, I: 0, S: 0, C: 0 },
+  answers: [null, null, null, null],
+  currentRiddle: 0,
+  token: null,
+  handle: null,
+  passphrase: null
+};
+
+/* ─── FORTUNE COOKIE PASSPHRASES ─── */
+const passphrases = [
+  "a bird with no feet sleeps on the wind",
+  "the door was always open, you just couldn't see it",
+  "some frequencies only carry in the dark",
+  "the distance between lost and found is one honest word",
+  "the record doesn't skip — it remembers",
+  "still water shows you what moving water hides",
+  "the light that guided you is still on",
+  "what you carry gets lighter when you name it"
+];
+
+/* ─── HANDLE WORDS ─── */
+const handleWords = {
+  D: ['Iron','Steel','Stone','Flint','Ember'],
+  I: ['Neon','Spark','Echo','Drift','Signal'],
+  S: ['Haven','Tide','Root','Shore','Grove'],
+  C: ['Cipher','Trace','Veil','Scroll','Mirror']
+};
+const handleNouns = ['Fox','Wolf','Moth','Crow','Owl','Lynx','Heron','Raven'];
+
+/* ─── NAV ─── */
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+
+  // side effects
+  if (id === 'screen-fortune') setupFortune();
+  if (id === 'screen-handle') setupHandle();
+  if (id === 'screen-booking') prefillForm();
+  if (id === 'screen-confirm') showConfirm();
+}
+
+/* ─── RIDDLE SYSTEM ─── */
+function showRiddle(idx) {
+  document.querySelectorAll('.riddle-card').forEach((c,i) => {
+    c.classList.toggle('active', i === idx);
+  });
+  state.currentRiddle = idx;
+  // update dots
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.toggle('current-page', i-1 === idx);
+  }
+}
+
+function selectAnswer(riddleIdx, discType, btn) {
+  // deselect siblings
+  btn.closest('.riddle-options').querySelectorAll('.riddle-option')
+     .forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  // remove old score for this riddle
+  if (state.answers[riddleIdx]) {
+    state.discScores[state.answers[riddleIdx]]--;
+  }
+  state.answers[riddleIdx] = discType;
+  state.discScores[discType]++;
+
+  // auto-advance after a beat
+  setTimeout(() => {
+    if (riddleIdx < 3) {
+      showRiddle(riddleIdx + 1);
+    }
+    checkRiddleComplete();
+  }, 400);
+}
+
+function checkRiddleComplete() {
+  const done = state.answers.every(a => a !== null);
+  document.getElementById('lobby-next-btn').style.display = done ? 'block' : 'none';
+}
+
+/* ─── FORTUNE COOKIE ─── */
+function setupFortune() {
+  const el = document.getElementById('fortune-phrase');
+  const phrase = passphrases[Math.floor(Math.random() * passphrases.length)];
+  state.passphrase = phrase;
+  el.classList.add('changing');
+  setTimeout(() => {
+    el.textContent = phrase;
+    el.classList.remove('changing');
+  }, 300);
+}
+
+/* ─── DRAG & DROP / TOKEN SELECTION ─── */
+let dragging = null;
+
+function dragStart(e, name) {
+  dragging = name;
+  e.dataTransfer.setData('text/plain', name);
+}
+
+function dragOver(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.add('drag-over');
+}
+
+function dragLeave(e) {
+  document.getElementById('drop-zone').classList.remove('drag-over');
+}
+
+function dropToken(e) {
+  e.preventDefault();
+  const name = e.dataTransfer.getData('text/plain') || dragging;
+  if (name) confirmToken(name);
+  document.getElementById('drop-zone').classList.remove('drag-over');
+}
+
+function selectToken(name, cardEl) {
+  // highlight
+  document.querySelectorAll('.token-card').forEach(c => c.classList.remove('selected'));
+  cardEl.classList.add('selected');
+  state.token = name;
+  // show in drop zone
+  const lbl = document.getElementById('drop-zone-label');
+  const hint = document.getElementById('drop-zone-hint');
+  lbl.textContent = name;
+  lbl.style.color = 'var(--green-neon)';
+  lbl.style.textShadow = '0 0 8px var(--green-neon)';
+  hint.textContent = 'your token ✓';
+  document.getElementById('greenroom-next').style.display = 'block';
+}
+
+function confirmToken(name) {
+  state.token = name;
+  const lbl = document.getElementById('drop-zone-label');
+  const hint = document.getElementById('drop-zone-hint');
+  lbl.textContent = name;
+  lbl.style.color = 'var(--green-neon)';
+  lbl.style.textShadow = '0 0 8px var(--green-neon)';
+  hint.textContent = 'your token ✓';
+  // highlight corresponding card
+  document.querySelectorAll('.token-card').forEach(c => {
+    const n = c.querySelector('.token-name').textContent;
+    c.classList.toggle('selected', n === name);
+  });
+  document.getElementById('greenroom-next').style.display = 'block';
+}
+
+/* ─── HANDLE GENERATION ─── */
+function setupHandle() {
+  // find dominant DISC
+  const scores = state.discScores;
+  const dominant = Object.keys(scores).reduce((a,b) => scores[a] >= scores[b] ? a : b);
+  const words = handleWords[dominant];
+  const adj = words[Math.floor(Math.random() * words.length)];
+  const noun = handleNouns[Math.floor(Math.random() * handleNouns.length)];
+  const tokenShort = state.token ? state.token.replace('THE ','').split(' ')[0] : 'CARD';
+  state.handle = `${adj} ${noun} · ${tokenShort}`;
+
+  // Lacquer drip effect: randomly capitalize letters in subtitle
+  const el = document.getElementById('handle-subtitle');
+  const text = el.textContent;
+  let dripped = '';
+  for (let i = 0; i < text.length; i++) {
+    dripped += Math.random() < 0.12 ? text[i].toUpperCase() : text[i].toLowerCase();
+  }
+  el.textContent = dripped;
+
+  document.getElementById('handle-display').textContent = state.handle;
+}
+
+/* ─── PRE-FILL FORM ─── */
+function prefillForm() {
+  document.getElementById('form-handle').value = state.handle || '—';
+  document.getElementById('form-passphrase').value = state.passphrase || '—';
+  document.getElementById('form-note').value = document.getElementById('caller-note').value || '';
+}
+
+/* ─── SAFETY SCREENING ─── */
+const screenState = { q1: null, q2: null, q3: null };
+
+function screen(q, val, btn) {
+  btn.closest('.screening-opts').querySelectorAll('.screening-opt')
+     .forEach(b => b.classList.remove('selected','bad'));
+  btn.classList.add('selected');
+  screenState['q'+q] = val;
+
+  // check for bad answers
+  const bad = (screenState.q1 === 'yes') || (screenState.q2 === 'no') || (screenState.q3 === 'yes');
+  const crisisBox = document.getElementById('crisis-box');
+  const bookingForm = document.getElementById('booking-form');
+
+  if (bad) {
+    btn.classList.add('bad');
+    crisisBox.classList.add('show');
+    bookingForm.style.display = 'none';
+  } else {
+    crisisBox.classList.remove('show');
+    // only show form if all 3 answered
+    if (screenState.q1 && screenState.q2 && screenState.q3) {
+      bookingForm.style.display = 'flex';
+    }
+  }
+}
+
+/* ─── CONSENT / SUBMIT ─── */
+function toggleSubmit() {
+  const cb = document.getElementById('consent-check');
+  document.getElementById('submit-btn').disabled = !cb.checked;
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+  // fire formspree in bg
+  const form = e.target;
+  const data = new FormData(form);
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  }).catch(() => {}); // fail silently — confirmation still shows
+  goTo('screen-confirm');
+}
+
+/* ─── CONFIRMATION ─── */
+function showConfirm() {
+  const el = document.getElementById('confirm-handle-line');
+  el.textContent = (state.handle || 'Caller') + '.';
+  setTimeout(() => {
+    document.getElementById('confirm-stamp').classList.add('show');
+  }, 300);
+}
+
+/* ─── INIT ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  // pre-load a passphrase for the fortune screen
+  state.passphrase = passphrases[Math.floor(Math.random() * passphrases.length)];
+});
+</script>
+
+</body>
+</html>
